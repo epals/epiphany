@@ -1,0 +1,16 @@
+# for pretty urls in nginx, you need to rewrite requests like this http://mysite.com/a/version.json to http://mysite.com/a.php?__route__=/version.json
+# that is, make your api's end point is passed via the __route__ parameter
+
+# old way
+rewrite /a(/.*) /a.php?__route__=$1 break;
+
+
+# better way, using try_files
+location ~ ^/a(/.*)$ {
+   try_files $uri a.php?__route__=$1 =404;
+
+   include /etc/nginx/fastcgi_params;
+   fastcgi_param    SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+   fastcgi_index    index.php;
+}
+

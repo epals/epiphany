@@ -1,0 +1,19 @@
+{
+    "name": "epals/epiphany",
+    "type": "library",
+    "description": "The ePals Classroom Exchange fork of the Epiphany PHP Framework",
+    "keywords": ["api","framework"],
+    "homepage": "https://github.com/epals/epiphany",
+    "license": "BSD",
+    "authors": [
+        {
+            "name": "ePals Classroom Exchange",
+            "email": "smulligan@corp.epals.com",
+            "homepage": "http://www.epals.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    }
+}

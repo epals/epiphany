@@ -116,6 +116,39 @@ class EpiApi
     $this->routes[] = array('httpMethod' => $method, 'path' => $route, 'callback' => $callback);
     $this->regexes[]= "#^{$route}\$#";
   }
+
+  /**
+   * load('api_config.ini')
+   * @name load
+   * @author Steve Mulligan <smulligan@corp.epals.com>
+   * @param string $api_config_ini_filename
+   */
+  public function load($file)
+  {
+    $file = Epi::getPath('config') . "/{$file}";
+    if(!file_exists($file))
+    {
+      EpiException::raise(new EpiException("Config file ({$file}) does not exist"));
+      break; // need to simulate same behavior if exceptions are turned off
+    }
+
+    $parsed_array = parse_ini_file($file, true);
+    foreach($parsed_array as $route)
+    {
+      $method = strtolower($route['method']);
+      $vis = strtolower($route['visibility']);
+      // default visibiltiy is false.  you MUST explcitly allow external access by adding visibility = external to the ini file
+
+      $visibility = self::internal;
+      if ($vis == "external") $visibility = self::external;
+
+      if(isset($route['class']) && isset($route['function']))
+        $this->$method($route['path'], array($route['class'], $route['function']), $visibility);
+      elseif(isset($route['function']))
+        $this->$method($route['path'], $route['function'], $visibility);
+    }
+  }
+
 }
 
 function getApi()

@@ -144,6 +144,8 @@ class EpiApi
 
       if(isset($route['class']) && isset($route['function']))
         $this->$method($route['path'], array($route['class'], $route['function']), $visibility);
+      if(isset($route['instance']) && isset($route['function']))
+        $this->$method($route['path'], array(new $route['instance'](), $route['function']), $visibility);
       elseif(isset($route['function']))
         $this->$method($route['path'], $route['function'], $visibility);
     }
